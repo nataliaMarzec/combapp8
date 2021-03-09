@@ -11,6 +11,7 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+
       nombre: DataTypes.STRING,
       codigo: DataTypes.INTEGER,
       descripcion: DataTypes.STRING,
@@ -20,6 +21,7 @@ module.exports = function (sequelize, DataTypes) {
     {
       tableName: "Articulos",
       modelName: "Articulo",
+      foreignKey: "articulo_id",
     }
   );
 

@@ -16,11 +16,10 @@ module.exports = function (sequelize, DataTypes) {
       tipoComprobante: DataTypes.STRING,
       nroComprobante: DataTypes.STRING,
       ptoVenta: DataTypes.STRING,
-      importePago: DataTypes.BIGINT.UNSIGNED,
       concepto:DataTypes.STRING,
+      importeTotal:DataTypes.BIGINT.UNSIGNED,
       saldoCobrado: DataTypes.BIGINT.UNSIGNED,
       montoSinCobrar: DataTypes.BIGINT.UNSIGNED,
-      importeTotal:DataTypes.BIGINT.UNSIGNED,
       cantidadArticulos:DataTypes.BIGINT.UNSIGNED,
     },
 

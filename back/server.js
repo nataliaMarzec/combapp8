@@ -16,7 +16,7 @@ server.use(require ('./routes/routes.js'));
 // server.use('/', require('./routes/routesAuth')(passport,Usuario));
 // server.use(require('./routes/routesHtml')(Usuario));
 
-server.set('port',process.env.PORT ||8888);
+server.set('port',process.env.PORT ||8282);
 server.get("/", (req, res) => res.send('APP UP'));
 
 

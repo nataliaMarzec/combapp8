@@ -9,7 +9,7 @@ const UsuarioModel=require('./usuario');
 const PagoModel=require('./pago');
 
 
-const DBURL='mysql://nat:Combapp_20@localhost:3306/combapp'
+const DBURL='mysql://nat8:Combapp8_20@localhost:3306/combapp8'
 let sequelize=new Sequelize(DBURL,{
    operatorsAliases:'false',
     pool: {

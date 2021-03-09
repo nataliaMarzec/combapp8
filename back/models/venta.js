@@ -17,43 +17,14 @@ module.exports = function (sequelize, DataTypes) {
       saldoCobrado: DataTypes.BIGINT.UNSIGNED,
       montoSinCobrar: DataTypes.BIGINT.UNSIGNED,
       tipoDePago: DataTypes.STRING,
-      importeTotal:DataTypes.BIGINT.UNSIGNED,
-      // factura_id: {
-      //   type: DataTypes.BIGINT,
-      //   allowNull: false,
-      //   references: {
-      //     model: Factura,
-      //     key: 'id'
-      //   },
-      //   comment: 'facturada'
-      // },
-        
-      //   get() {
-      //     return this.getDataValue("fechas").split(";");
-      //   },
-      //   set(val) {
-      //     this.setDataValue("fechas", val.join(";"));
-      //   },
-      },
-    
-
-    // fechas,pagosDeCliente,articulos
-    //       Factura.hasMany(Ventas, {
-    // 	  foreignKey: 'factura_id'
-    // }),
-
-    // },
+      importeTotal: DataTypes.BIGINT.UNSIGNED,
+    },
 
     {
       tableName: "Ventas",
       modelName: "Venta",
     }
-    
   );
-  // (Venta.associate = (models) => {
-  //   Venta.belongTo(Cliente)
-		
-  // });
 
   return Venta;
 };

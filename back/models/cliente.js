@@ -11,46 +11,33 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      cuit: DataTypes.BIGINT.UNSIGNED,
+      cuit: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       nombre: {
         type: DataTypes.STRING,
         allowNull: false,
-      validate: {
+        validate: {
           notNull: {
             msg: "Por favor completa tu nombre",
           },
         },
-      isAlpha: {
+        isAlpha: {
           args: true,
-          msg: "El nombre solo puede contener letras"
-      },
-      len: {
+          msg: "El nombre solo puede contener letras",
+        },
+        len: {
           args: [2, 255],
-          msg: "El nombre tiene que ser entre 2 y 255 caracteres"
-      }
-
+          msg: "El nombre tiene que ser entre 2 y 255 caracteres",
+        },
       },
       apellido: DataTypes.STRING,
       razonSocial: DataTypes.STRING,
       telefono: DataTypes.STRING,
       email: {
         type: DataTypes.STRING,
-        // validate: {
-        //     isEmail: {
-        //         args: true,
-        //         msg: "El campo tiene que ser un correo valido"
-        //     }
-        // }
-    },
-
-      // ventas: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: false,
-      //   references: {
-      //     model: Venta,
-      //     key: "id",
-      //   },
-      // },
+      },
     },
 
     {

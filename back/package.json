@@ -4,7 +4,10 @@
   "description": "TTIP Combapp8",
   "main": "server.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "local:migrate": "node_modules/.bin/sequelize db:migrate",
+    "local:migrate:undo": "node_modules/sequelize-cli/lib/sequelize db:migrate:undo",
+    "local:seeds": "node_modules/.bin/sequelize db:seed:all"
   },
   "keywords": [
     "nodejs",
@@ -15,15 +18,52 @@
   "license": "MIT",
   "dependencies": {
     "-": "0.0.1",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "g": "^2.0.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
-    "sequelize": "^6.5.0"
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "sequelize": "^6.3.4"
   },
   "devDependencies": {
     "sequelize-cli": "^6.2.0"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "context",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it",
+      "expect"
+    ]
+  },
+  "development": {
+    "username": "nat8",
+    "password": "Combapp8_20",
+    "database": "combapp8",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   }
 }
