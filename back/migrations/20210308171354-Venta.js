@@ -14,19 +14,19 @@ module.exports = {
       fecha: {
         type: Sequelize.DATE,
       },
+      tipoDePago: {
+        type: Sequelize.STRING,
+      },
       facturado: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
+      },
+      importeTotal: {
+        type: Sequelize.BIGINT.UNSIGNED,
       },
       saldoCobrado: {
         type: Sequelize.BIGINT.UNSIGNED,
       },
       montoSinCobrar: {
-        type: Sequelize.BIGINT.UNSIGNED,
-      },
-      tipoDePago: {
-        type: Sequelize.STRING,
-      },
-      importeTotal: {
         type: Sequelize.BIGINT.UNSIGNED,
       },
 

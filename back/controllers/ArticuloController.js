@@ -4,23 +4,23 @@ const { Articulo } = require("../models/sequelizeConnection.js");
 
 module.exports = {
 
-  async create(req, res) {
+  create:async(req, res)=> {
     const articulo = req.body;
 
     const { id, nombre, codigo, descripcion, precio } = await Articulo.create(
       articulo
     );
 
-    return res.json({
+    return (res.json({
       id,
       nombre,
       codigo,
       descripcion,
       precio,
-    }).res.status(200).json({articulo: "Articulo creado"})
+    }))
     
   },
-
+ 
   getArticulos: async (req, res, next) => {
     const articulos = await Articulo.findAll();
     if (![req.body.values]) {
@@ -57,6 +57,8 @@ module.exports = {
       codigo,
       descripcion,
       precio,
-    });
+    }).res.send(200,"articulo editado")
   },
 };
+
+

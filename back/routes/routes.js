@@ -14,7 +14,6 @@ router.get("/clientes/:id", controllerCliente.getClienteId);
 router.get(`/clientes`, controllerCliente.getClientes);
 router.delete("/clientes/:id", controllerCliente.deleteClienteById);
 router.put("/:clientes/:id", controllerCliente.update);
-// router.put("/:clientes/", controllerCliente.update);
 router.get("/clientes/cuit/:cuit", controllerCliente.getClienteCuit);
 router.get("/clientes/busqueda/:cuit", controllerCliente.getClienteCuit);
 
@@ -22,7 +21,7 @@ router.post("/ventas", controllerVenta.create);
 router.get("/ventas/:id", controllerVenta.getVentaId);
 router.get("/ventas", controllerVenta.getVentas);
 router.delete("/ventas/:id", controllerVenta.deleteVentaById);
-router.put("/ventas/", controllerVenta.update);
+router.put("/ventas/:id", controllerVenta.update);
 router.get("/ventas/facturadas", controllerVenta.getVentasFacturadas);
 router.get("/ventas/fecha", controllerVenta.getVentasFecha);
 // // router.get('ventas/fechas',controllerVenta.buscarFechas)
@@ -33,7 +32,7 @@ router.get("/facturas", controllerFactura.getFacturas);
 router.delete("/facturas/:id", controllerFactura.deleteFacturaById);
 router.put("/facturas/:id", controllerFactura.update);
 
-router.post("/articulos", controllerArticulo.create);
+router.post("/articulos/nuevo", controllerArticulo.create);
 router.get("/articulos/:id", controllerArticulo.getArticuloId);
 router.get("/articulos", controllerArticulo.getArticulos);
 router.delete("/articulos/:id", controllerArticulo.deleteArticuloById);

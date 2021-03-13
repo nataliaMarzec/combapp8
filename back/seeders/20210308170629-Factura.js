@@ -52,13 +52,13 @@ module.exports = {
     ]),
       {};
 
-    articulos.forEach((articulo) => {
-      facturas.push({
-        fechaEmision: new Date(),
-        tipoComprobante: "CFinal",
-        nroComprobante: "23",
-        ptoVenta: "Cap Sarmiento",
-        articulo_id: "articulo_id",
+    facturas.forEach((factura) => {
+      articulos.push({
+        nombre: "chocolate",
+        codigo: 124,
+        descripcion: "negro",
+        precio: 220,
+        facturaId_articulo: "facturaId_articulo",
         createdAt: new Date(),
         updatedAt: new Date(),
       });

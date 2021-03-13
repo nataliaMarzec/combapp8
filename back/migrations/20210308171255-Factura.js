@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      clienteId_factura: {
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Facturas",
+          key: "id",
+        },
+      },
       fechaEmision: {
         type: Sequelize.DATE,
       },

@@ -1,6 +1,6 @@
 "use strict";
 const { Sequelize, Op, Model } = require("sequelize");
-const { Factura } = require("./sequelizeConnection");
+const { Factura, Venta } = require("./sequelizeConnection");
 module.exports = function (sequelize, DataTypes) {
   const Articulo = sequelize.define(
     "Articulo",
@@ -11,7 +11,8 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-
+      ventaId_articulo:DataTypes.INTEGER,
+      facturaId_articulo:DataTypes.INTEGER,
       nombre: DataTypes.STRING,
       codigo: DataTypes.INTEGER,
       descripcion: DataTypes.STRING,
@@ -21,18 +22,13 @@ module.exports = function (sequelize, DataTypes) {
     {
       tableName: "Articulos",
       modelName: "Articulo",
-      foreignKey: "articulo_id",
+      
     }
   );
 
   Articulo.associate = (models) => {
-    Articulo.belongsTo(Factura, {
-      foreignKey: {
-        name: "articulo_id",
-        allowNull: true,
-      },
-      as: "Factura",
-    });
+    Articulo.belongsTo(models.Venta);
+    Articulo.belongsTo(models.Factura);
   };
 
   return Articulo;

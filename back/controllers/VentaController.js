@@ -12,21 +12,25 @@ module.exports = {
 
     const {
       id,
+      nroVenta,
       fecha,
+      tipoDePago,
       facturado,
+      importeTotal,
       saldoCobrado,
       montoSinCobrar,
-      tipoDePago,
+  
     } = await Venta.create(venta);
 
     return res
       .json({
-        id,
+        nroVenta,
         fecha,
+        tipoDePago,
         facturado,
+        importeTotal,
         saldoCobrado,
         montoSinCobrar,
-        tipoDePago,
       })
       .res.status(200)
       .json(venta);
@@ -59,22 +63,26 @@ module.exports = {
     const venta = await Venta.findByPk(req.params.id);
     const {
       id,
+      nroVenta,
       fecha,
+      tipoDePago,
       facturado,
+      importeTotal,
       saldoCobrado,
       montoSinCobrar,
-      tipoDePago,
     } = await venta.update(req.body);
 
     return res.json({
-      id,
+      nroVenta,
       fecha,
+      tipoDePago,
       facturado,
+      importeTotal,
       saldoCobrado,
       montoSinCobrar,
-      tipoDePago,
     });
   },
+  
   getVentasFacturadas: async (req, res, next) => {
     const ventasFacturadas = await Venta.findAll({
       where: { facturado: true },

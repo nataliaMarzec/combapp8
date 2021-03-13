@@ -1,6 +1,6 @@
 "use strict";
 const { Sequelize, Op, Model } = require("sequelize");
-const { Venta, Factura } = require("./sequelizeConnection");
+const { Venta, Factura,Pago } = require("./sequelizeConnection");
 module.exports = function (sequelize, DataTypes) {
   const Cliente = sequelize.define(
     "Cliente",
@@ -11,6 +11,8 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      ventaId_cliente:DataTypes.INTEGER,
+      pagoId_cliente:DataTypes.INTEGER,
       cuit: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -47,10 +49,19 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   Cliente.associate = (models) => {
-    Cliente.hasMany(Factura, {
-      foreignKey: "cliente_id",
-      as: "factura",
+    Cliente.hasMany(models.Factura, {
+      foreignKey: "clienteId_factura",
+      as: "Facturas",
     });
+    Cliente.belongsTo(models.Venta);
+    Cliente.belongsTo(models.Pago);
+
+    // Cliente.belongsToMany(models.Venta, {
+    //   through:"Registro",
+    //   as: "Venta",
+    //   foreignKey: "cliente_venta_id", 
+     
+    // });
   };
 
   return Cliente;

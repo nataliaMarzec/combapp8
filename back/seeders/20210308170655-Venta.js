@@ -8,10 +8,12 @@ module.exports = {
         {
           nroVenta: 101,
           fecha: new Date("<2020-09-4>"),
-          facturado: true,
+          tipoDePago: "efectivo",
+          facturado: "no",
+          importeTotal:"200",
           saldoCobrado: "100",
           montoSinCobrar: "100",
-          tipoDePago: "efectivo",
+         
 
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -19,10 +21,12 @@ module.exports = {
         {
           nroVenta: 102,
           fecha: new Date("<2020-10-3>"),
-          facturado: false,
+          tipoDePago: "efectivo",
+          facturado: "si",
+          importeTotal:"622",
           saldoCobrado: "522",
           montoSinCobrar: "100",
-          tipoDePago: "efectivo",
+         
 
           createdAt: new Date(),
           updatedAt: new Date(),

@@ -12,15 +12,16 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      clienteId_factura: DataTypes.INTEGER,
       fechaEmision: DataTypes.DATE,
       tipoComprobante: DataTypes.STRING,
       nroComprobante: DataTypes.STRING,
       ptoVenta: DataTypes.STRING,
-      concepto:DataTypes.STRING,
-      importeTotal:DataTypes.BIGINT.UNSIGNED,
+      concepto: DataTypes.STRING,
+      importeTotal: DataTypes.BIGINT.UNSIGNED,
       saldoCobrado: DataTypes.BIGINT.UNSIGNED,
       montoSinCobrar: DataTypes.BIGINT.UNSIGNED,
-      cantidadArticulos:DataTypes.BIGINT.UNSIGNED,
+      cantidadArticulos: DataTypes.BIGINT.UNSIGNED,
     },
 
     {
@@ -30,13 +31,11 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   Factura.associate = (models) => {
-    Factura.hasMany(Articulo, {
-      foreignKey: {
-        name: "articulo_id",
-        allowNull: true,
-      },
-      as: "Articulo",
+    Factura.hasMany(models.Articulo, {
+      foreignKey: "facturaId_articulo",
+      as: "Articulos",
     });
+    Factura.belongsTo(models.Cliente);
   };
 
   return Factura;

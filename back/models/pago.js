@@ -1,6 +1,6 @@
 "use strict";
 const { Sequelize, Op, Model } = require("sequelize");
-const { Venta, Factura } = require("./sequelizeConnection");
+const { Venta, Factura,Cliente } = require("./sequelizeConnection");
 module.exports = function (sequelize, DataTypes) {
   const Pago = sequelize.define(
     "Pago",
@@ -11,24 +11,20 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      fechaPago:DataTypes.DATE,
+      fechaPago: DataTypes.DATE,
       importePago: DataTypes.BIGINT.UNSIGNED,
-      idPago: DataTypes.BIGINT.UNSIGNED,
-      
-
     },
     {
       tableName: "Pagos",
       modelName: "Pago",
     }
   );
-
-//   Cliente.associate = (models) => {
-//     Cliente.hasMany(Factura, {
-//       foreignKey: "cliente_id",
-//       as: "factura",
-//     });
-//   };
+  Pago.associate = (models) => {
+    Pago.hasMany(models.Cliente, {
+      foreignKey: "pagoId_cliente",
+      as: "Clientes",
+    });
+  };
 
   return Pago;
 };

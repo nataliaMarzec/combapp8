@@ -74,7 +74,7 @@ module.exports = {
       razonSocial,
       telefono,
       email,
-    });
+    }).res.send(200,"cliente editado");
   },
 
 
