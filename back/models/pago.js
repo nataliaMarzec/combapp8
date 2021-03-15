@@ -11,6 +11,7 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      clienteId_pago:DataTypes.INTEGER,
       fechaPago: DataTypes.DATE,
       importePago: DataTypes.BIGINT.UNSIGNED,
     },
@@ -18,13 +19,11 @@ module.exports = function (sequelize, DataTypes) {
       tableName: "Pagos",
       modelName: "Pago",
     }
-  );
-  Pago.associate = (models) => {
-    Pago.hasMany(models.Cliente, {
-      foreignKey: "pagoId_cliente",
-      as: "Clientes",
-    });
-  };
-
+    );
+  
+    Pago.associate = (models) => {
+      Pago.belongsTo(models.Cliente);
+      
+    };
   return Pago;
 };

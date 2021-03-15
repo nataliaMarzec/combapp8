@@ -28,21 +28,16 @@ module.exports = function (sequelize, DataTypes) {
   );
   Venta.associate = (models) => {
     Venta.hasMany(models.Articulo, {
-      foreignKey:"ventaId_articulo",
+      foreignKey:"articuloId_venta",
       as: "Articulos",
     });
-    Venta.hasMany(models.Cliente, {
-      foreignKey: "ventaId_cliente",
-      as: "Clientes"
-    });
-
-    // Venta.belongsToMany(models.Cliente, {
-    //   through:"Registro",
-    //   foreignKey: "cliente_venta_id", 
-    //   as: "Clientes",
+    Venta.belongsToMany(models.Cliente, {
+      through:"RegistroVentas",
+      foreignKey: "clienteId_venta", 
+      as: "Clientes",
       
      
-    // });
+    });
     };
   
 

@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
 
   Factura.associate = (models) => {
     Factura.hasMany(models.Articulo, {
-      foreignKey: "facturaId_articulo",
+      foreignKey: "articuloId_factura",
       as: "Articulos",
     });
     Factura.belongsTo(models.Cliente);

@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      clienteId_pago: {
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Pagos",
+          key: "id",
+        },
+      },
       fechaPago: DataTypes.DATE,
       importePago: DataTypes.BIGINT.UNSIGNED,
 

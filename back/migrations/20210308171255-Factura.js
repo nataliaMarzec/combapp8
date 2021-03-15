@@ -16,6 +16,14 @@ module.exports = {
           key: "id",
         },
       },
+      articuloId_factura: {
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Articulos",
+          key: "id",
+        },
+      },
       fechaEmision: {
         type: Sequelize.DATE,
       },

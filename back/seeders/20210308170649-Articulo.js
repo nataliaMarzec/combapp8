@@ -13,6 +13,7 @@ module.exports = {
       "Articulos",
       [
         {
+          articuloId_venta:13,
           nombre: "caramelo",
           codigo: 123,
           descripcion: "dulce",
@@ -21,6 +22,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          articuloId_venta:14,
           nombre: "chocolate",
           codigo: 124,
           descripcion: "negro",
@@ -29,6 +31,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          articuloId_venta:15,
           nombre: "gaseosa",
           codigo: 125,
           descripcion: "naranja",
