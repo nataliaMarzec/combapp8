@@ -67,32 +67,6 @@ class ArticulosLista extends React.Component {
       );
   };
 
-  // onSubmitDataList(unArticulo) {
-  //   this.onSelect(unArticulo);
-  //   if (this.state.onSelectDataList == true) {
-  //     console.log("articuloSeleccionado__");
-  //     return (
-  //       <Modal
-  //         isOpen={this.state.modal}
-  //         toggle={this.toggleDataList}
-  //         className={this.props.className}
-  //       >
-  //         <ModalHeader toggle={this.toggleDataList}>
-  //           <strong>Nuevo</strong>Articulo
-  //         </ModalHeader>
-
-  //         {/* <CargarArticulo
-  //           articuloChanged={this.articulosDataListInputChangeHandler}
-  //           articulo={this.state.articulo}
-  //           articulos={this.state.articulos}
-  //           listadoArticulos={this.listadoArticulos}
-  //         /> */}
-  //       </Modal>
-  //     );
-  //   } else {
-  //     console.log("sin articulo seleccionado__");
-  //   }
-  // }
 
   ArticulosDataListInput = () => {
     const [articulo, setItem] = useState();

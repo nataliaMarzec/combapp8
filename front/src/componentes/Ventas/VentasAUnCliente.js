@@ -89,11 +89,6 @@ class VentasAUnCliente extends React.Component {
     this.setState({ pagosDelCliente: props.pagosDelCliente });
   }
 
-  // componentDidMount() {
-  //   this.listadoVentas();
-  //   console.log("didMoutnv",this.listadoVentas())
-
-  // }
   componentWillMount() {
     this.listadoClientes();
     console.log("willMount", this.listadoClientes());
@@ -349,10 +344,8 @@ class VentasAUnCliente extends React.Component {
                   </Form>
                 </CardHeader>
                 <div>
-                  {/* {Boolean(this.state.cuitelegido>=1) && */}
                   <this.unaTabla />
 
-                  {/* } */}
                 </div>
                 <CargarVenta
                   cuit={cuitCliente}
@@ -367,36 +360,7 @@ class VentasAUnCliente extends React.Component {
                   pagosDelCliente={this.state.pagoDelCliente}
                   ventasACliente={this.state.VentasACliente}
                 ></CargarVenta>
-                {/* <this.ventasRows></this.ventasRows> */}
-                <tbody>
-
-                  {/* {this.pagosRows()} */}
-                  {/* 
-                  <tr className="#1b5e20 green darken-4">
-                  <th>Total</th>
-                  <th></th>
-                  <th></th>
-                  <th>{this.calcularDeudaTotal()}</th>
-
-                  {this.calcularDeudaTotal() != 0 ? (
-                    <th>                        
-                    <Button
-                          type="button"
-                          style={{ margin: "2px" }}
-                          color="success"
-                          outline
-                          onClick={this.calcularDeudaTotal}
-                        >
-                          <i className="fa fa-dot-circle-o"></i>Pagar
-                    </Button></th>
-                  ) : (
-                    <th>
-                      <span>Sin Deuda</span>
-                    </th>
-                  )}
-                  <th> </th>
-                </tr>  */}
-                </tbody>
+                
               </Card>
             </Col>
           </Row>
@@ -459,17 +423,6 @@ class VentasAUnCliente extends React.Component {
       </div>
     );
   };
-
-  // ventasRows = () => {
-  //   return this.state.ventasACliente.map((unaVenta) => {
-  //     return <Venta venta={unaVenta} />;
-  //   });
-  // };
-  // pagosRows = () => {
-  //   return this.state.pagosDelCliente.map((unPago) => {
-  //     return <Pago pago={unPago} />;
-  //   });
-  // };
 
   clienteSeleccionado = (unCliente) => {};
 
