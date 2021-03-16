@@ -21,22 +21,7 @@ export default {
       url: "/clientes",
       icon: "icon-people",
     },
-    {
-      name: "Usuarios",
-      url: "/usuarios",
-      icon: "icon-list",
-      badge: {
-        variant: "info",
-      },
-    },
-// {
-    //   name: 'Usuarios',
-    //   url: '/usuarios',
-    //   icon: 'icon-list',
-    //   badge: {
-    //     variant: 'info'
-    //   }
-    // },
+  
 
     
     {
@@ -57,19 +42,7 @@ export default {
 
       ],
     },
-    {
-      name: "Disabled",
-      url: "/dashboard",
-      icon: "icon-ban",
-      attributes: { disabled: true },
-    },
-    // {
-    //   name: 'Download CoreUI',
-    //   url: 'https://coreui.io/react/',
-    //   icon: 'icon-cloud-download',
-    //   class: 'mt-auto',
-    //   variant: 'success',
-    //   attributes: { target: '_blank', rel: "noopener" },
-    // },
+    
+  
   ],
 };
