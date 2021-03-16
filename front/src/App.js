@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './App.scss'
-// import Usuarios from './views/Usuarios/Usuarios'
 import {BrowserRouter as Router, Route, Switch, Redirect, NavLink as Link} from "react-router-dom"
 import ArticulosLista from './componentes/Articulos/ArticulosLista'
 
@@ -18,14 +17,7 @@ function App() {
   return (
     <div className="App">
     <Router>
-  {/* <Nav>
-  <NavItem>
-  <NavLink tag={Link} to="/clientes" activeClassName="active">Clientes</NavLink>
-  </NavItem>
-  <NavItem>
-  <NavLink tag={Link} to="/usuarios" activeClassName="active">Usuarios</NavLink>
-  </NavItem>
-</Nav> */}
+ 
       <main className="App-main">
       <React.Suspense fallback={loading()}>
       <Switch>
@@ -37,9 +29,6 @@ function App() {
         </Switch>
       </React.Suspense>
       <Switch>
-        {/* <Route path="/clientes"  name="Clientes" /> */}
-        {/* <Route path="/usuarios" component={Usuarios} /> */}
-        {/* <Route path="/" name="ArticulosLista" render={props => <ArticulosLista {...props}/>} /> */}
         <Redirect to="/" />
       </Switch>
       </main>
