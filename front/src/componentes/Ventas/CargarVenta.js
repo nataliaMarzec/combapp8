@@ -134,28 +134,6 @@ class CargarVenta extends React.Component {
     return (total - saldoCobrado).toFixed(2);
   }
 
-  // pagoDelCliente = () => {
-  //   var total = 0;
-  //   this.state.pagosDeCliente.forEach((pago) => {
-  //     total += parseFloat(pago.importePago);
-  //     console.log("pagos total", total);
-  //   });
-
-  //   return total.toFixed(2);
-  // };
-
-  // calcularDeudaTotal = () => {
-  //   var total = this.deudaTotal() - this.pagoDelCliente();
-  //   return total.toFixed(2);
-  // };
-
-
-  handleChangePagos = (event) => {
-    var nuevosPagos = Object.assign({}, this.state.pagosDeCliente);
-    nuevosPagos[event.target.name] = event.target.value;
-    console.log("pagosDeCliente", nuevosPagos);
-    this.setState({ pagosDeCliente: nuevosPagos });
-  };
 
   calcularDeuda=()=>{
     var total = 0;

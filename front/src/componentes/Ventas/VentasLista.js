@@ -2,7 +2,6 @@ import React from "react";
 import Venta from "./Venta";
 import CargarVenta from "./CargarVenta";
 import Cliente from "../Clientes/Cliente"
-// import Articulos from "../Articulos/ArticulosLista";
 
 import {
   Table,
@@ -21,7 +20,6 @@ import {
   Label,
 
 } from "reactstrap";
-// const fetchClientes = require("../fetchResponse");
 
 class VentasLista extends React.Component {
   constructor(props) {

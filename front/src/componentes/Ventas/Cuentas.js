@@ -4,7 +4,6 @@ import Venta from "./Venta";
 import CargarVenta from "./CargarVenta";
 import Clientes from "../Clientes/ClientesLista";
 import Articulos from "../Articulos/ArticulosLista";
-// const format = require("fecha").format;
 
 class Cuentas extends React.Component {
   constructor(props) {
@@ -58,13 +57,6 @@ class Cuentas extends React.Component {
     return total.toFixed(2);
   };
 
-  // fechaFormateada = (fecha) => {
-  //   return format(fecha, "YYYY-MM-DD");
-  // };
-
-  // fechaConHora = (fecha) => {
-  //   return format(fecha, "YYYY-MM-DD HH:mm");
-  // };
 }
 
 export default Cuentas;

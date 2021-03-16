@@ -39,7 +39,6 @@ class VentasAUnClienteRows extends React.Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.clientes !== this.props.clientes) {
       this.setState({ clientes: this.props.clientes });
-      // console.log("clientes props", this.props.clientes, nextProps.clientes.values());
     }
     if (nextProps.cliente !== this.props.cliente) {
       this.setState({ cliente: nextProps.cliente });
