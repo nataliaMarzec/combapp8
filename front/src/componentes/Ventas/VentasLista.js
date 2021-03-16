@@ -137,32 +137,6 @@ class VentasLista extends React.Component {
       <div className="container">
         <div></div>
         <Row>&nbsp;</Row>
-        <Container fluid>
-          <Button color="success" onClick={this.toggle}>
-            Iniciar venta
-          </Button>
-        
-          <Modal
-            isOpen={this.state.modal}
-            toggle={this.toggle}
-            className={this.props.className}
-          >
-            <ModalHeader toggle={this.toggle}>
-              <strong>Nueva</strong>Venta
-            </ModalHeader>
-            <CargarVenta
-              listadoClientes={this.listadoClientes}
-              listadoVentas={this.listadoVentas}
-              venta={this.state.venta}
-              ventas={this.state.ventas}
-              cliente={this.state.cliente}
-              clientes={this.state.clientes}
-              editarVentaFecht={this.props.editarVentaFecht}
-              estadoInicial={this.estadoInicial}
-            />
-          </Modal>
-          <Row>&nbsp;</Row>
-        </Container>
 
         <div className="animated fadeIn">
           <Row>

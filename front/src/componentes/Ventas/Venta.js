@@ -4,7 +4,9 @@ import VentasLista from "./VentasLista";
 class Cliente extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+     
+    };
   }
 
   eliminarVenta = (id) => {
@@ -47,43 +49,10 @@ class Cliente extends React.Component {
   }
 
   render = () => {
-    const editarActivado = this.state.editarActivado;
-    let buttonEditar;
-    if (editarActivado) {
-      buttonEditar = (
-        <button
-          className="btn #e65100 orange darken-4"
-          onClick={this.editCliente}
-        >
-          <i className="material-icons">edit</i>
-        </button>
-      );
-    }
-    const { index, onEditItem } = this.props;
-    const editable = this.state.editable;
-    let botonEditar;
-
-    const isMutableItem = this.props.isMutableItem || (() => true);
-    const toogle = this.props.toogle;
-    const iconStyle = {
-      display: "inline-block",
-    };
-    let purple = "bg-purple";
-    let botonEditarCol;
-    if (editable && isMutableItem) {
-      botonEditarCol = (
-        <Button style={iconStyle} onClick={() => this.abrirEditor(index)}>
-          <i
-            className="cui-pencil icons font-1xl d-block mt-1"
-            color={purple}
-          ></i>
-        </Button>
-      );
-    }
     return (
       <tr>
         <td>{this.props.venta.id}</td>
-        <td>{this.props.cliente.cuit}</td>
+        <td>{this.props.cuit}</td>
         <td>{this.props.venta.nroVenta}</td>
         <td>{this.props.venta.fecha}</td>
         <td>{this.props.venta.cliente}</td>
@@ -95,8 +64,7 @@ class Cliente extends React.Component {
         <td></td>
         <td>
           &nbsp;&nbsp;
-          {botonEditar}
-          {botonEditarCol}
+        
           <Button
             color="danger"
             size="btn-xs"

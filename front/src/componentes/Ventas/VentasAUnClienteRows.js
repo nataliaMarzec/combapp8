@@ -9,10 +9,9 @@ class VentasAUnClienteRows extends React.Component {
       editar: false,
       toogle: this.props.toggle,
       cliente:props.cliente,
-      
+      pagosDeCliente: [],
     };
     
-    this.abrirEditor = this.abrirEditor.bind(this);
     this.seleccionarCliente = this.seleccionarCliente.bind(this);
   }
 
@@ -29,17 +28,8 @@ class VentasAUnClienteRows extends React.Component {
     this.props.toggle();
   }
 
-  agregarVenta = () => {
-    this.props.clienteSeleccionado(this.props.cliente);
-  };
 
-  abrirEditor = (index) => (clientes) => {
-    const clientesLista = this.state.clientes[index];
-    console.log("abrirEditor", clientesLista);
-    
-  };
 
- 
   editCliente = () => {
     this.props.editarCliente(this.props.cliente);
     this.props.toogle();
@@ -60,13 +50,13 @@ class VentasAUnClienteRows extends React.Component {
       
     return (
       <tr>
-        <td>{this.state.cliente.id}</td>
-        <td>{this.state.cliente.cuit}</td>
-        <td>{this.state.cliente.nombre}</td>
-        <td>{this.state.cliente.apellido}</td>
-        <td>{this.state.cliente.razonSocial}</td>
-        <td>{this.state.cliente.telefono}</td>
-        <td>{this.state.cliente.email}</td>
+        <td>{this.props.cliente.id}</td>
+        <td>{this.props.cliente.cuit}</td>
+        <td>{this.props.cliente.nombre}</td>
+        <td>{this.props.cliente.apellido}</td>
+        <td>{this.props.cliente.razonSocial}</td>
+        <td>{this.props.cliente.telefono}</td>
+        <td>{this.props.cliente.email}</td>
         
         <td>
           &nbsp;&nbsp;
@@ -77,12 +67,7 @@ class VentasAUnClienteRows extends React.Component {
             <i className="fa fa-dot-circle-o">{""} Editar</i>
           </Button>
           &nbsp;&nbsp;
-          <Button
-          className="btn sm #ff9800 orange btn"
-          onClick={this.agregarVenta}
-        >
-           Iniciar venta
-        </Button>
+
         &nbsp;&nbsp;
     
       
