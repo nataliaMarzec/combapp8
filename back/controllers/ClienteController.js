@@ -1,5 +1,5 @@
 var { Op } = require("sequelize");
-const { Cliente } = require("../models/sequelizeConnection.js");
+const { Cliente, Venta } = require("../models/sequelizeConnection.js");
 // const cliente = require("../models/cliente.js");
 
 module.exports = {
@@ -98,6 +98,11 @@ getClienteCuit: async (req, res) => {
     return res.status(200).json(cliente)
   }
 },
+
+
+
+
+
 // async encontrarCuit(req, res) {
 //   const cliente = await Cliente.findAll({ where: {cuit:req.params.cuit} });
 //   return (cliente)

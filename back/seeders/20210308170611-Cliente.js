@@ -8,8 +8,6 @@ module.exports = {
     let ventas = await Venta.findAll();
     (clientes = [
       {
-        ventaId_cliente: "12",
-        pagoId_cliente: "13",
         cuit: "27350268263",
         nombre: "Brandon",
         apellido: "Adam",

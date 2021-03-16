@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import Cliente from "../Clientes/Cliente";
 import {
   Table,
@@ -11,13 +11,17 @@ import {
   Card,
   CardHeader,
   CardBody,
+  Collapse,
   Form,
   FormGroup,
   Input,
   Label,
 } from "reactstrap";
-import VentasAUnClienteRows from "./VentasAUnClienteRows";
 
+import VentasAUnClienteRows from "./VentasAUnClienteRows";
+import CargarVenta from "./CargarVenta";
+import Venta from "./Venta";
+import Pago from "../Pago";
 class VentasAUnCliente extends React.Component {
   constructor(props) {
     super(props);
@@ -28,16 +32,23 @@ class VentasAUnCliente extends React.Component {
       modal: false,
       editable: false,
       cuit: "",
-      cuitElegido:"",
+      cuitelegido: "",
       pagosDelCliente: [],
-      ventasACliente:[]
+      ventasACliente: [],
+      tablaId: "tabla",
+      limpiartabla: false,
+      mostrarBotonDePago: false,
+      open: false,
+      ventasACliente:props.ventasACliente,
+      pagosDelCliente:props.pagosDelCliente,
     };
     this.seleccionar = this.seleccionar.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.generarFila = this.generarFila.bind(this);
     this.listadoClientes = this.listadoClientes.bind(this);
     this.estadoInicial = this.estadoInicial.bind(this);
     this.clienteSeleccionado = this.clienteSeleccionado.bind(this);
+    this.calcularDeudaTotal = this.calcularDeudaTotal.bind(this);
+    this.handleChangeCliente = this.handleChangeCliente.bind(this);
   }
 
   toggle() {
@@ -56,36 +67,50 @@ class VentasAUnCliente extends React.Component {
         telefono: "",
         email: "",
       },
-       pagosCliente:[]
+      pagosCliente: [],
     });
     this.setState({
-        venta: {
-          nroVenta: "",
-          fecha: "",
-          tipoDePago: "",
-          facturado: "no",
-          importeTotal: "",
-          saldoCobrado: "",
-        },
-        montoSinCobrar: 0,
-      });
+      venta: {
+        nroVenta: "",
+        fecha: "",
+        tipoDePago: "",
+        facturado: "no",
+        importeTotal: "",
+        saldoCobrado: "",
+      },
+      montoSinCobrar: 0,
+    });
   };
-    
 
-  generarFila(unCliente) {
-    this.setState({ cliente: unCliente });
-    var myArray = this.state.clientes.slice();
-    myArray.push({ ...this.state.cliente });
-    this.setState({ clientes: myArray });
-    console.log(myArray, " --array handler  ", this.state.clientes.values());
+  componentWillReceiveProps(props) {
+    this.setState({ cliente: props.cliente });
+    this.setState({ ventasACliente: props.ventasACliente });
+    this.setState({ clientes: props.clientes });
+    this.setState({ pagosDelCliente: props.pagosDelCliente });
+  }
+
+  // componentDidMount() {
+  //   this.listadoVentas();
+  //   console.log("didMoutnv",this.listadoVentas())
+
+  // }
+  componentWillMount() {
+    this.listadoClientes();
+    console.log("willMount", this.listadoClientes());
   }
 
   verDetallesCliente(cuit) {
+    var limpiarTabla = this.state.limpiartabla;
     var listaActualizada = this.state.clientes.find(
       (item) => cuit == item.cuit
     );
     console.log("listaActualizada", listaActualizada);
-    this.setState({ cliente: listaActualizada,cuit:cuit });
+    this.setState({
+      cliente: listaActualizada,
+      cuit: cuit,
+      limpiarTabla: false,
+    });
+    this.handleAddRow();
     return listaActualizada;
   }
 
@@ -94,27 +119,31 @@ class VentasAUnCliente extends React.Component {
     const value = target.value;
     const name = target.name;
     this.setState({ [name]: value });
-    this.setState({cuitElegido:value})
-    console.log("change",this.state.cuitElegido,"value",value,"name",name)
+    this.setState({ cuitelegido: value });
+    console.log("change", this.state.cuitelegido, "value", value, "name", name);
   };
 
-  handleChange=(e)=>{
+  handleChange = (e) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
     this.setState({ [name]: value });
-}
+  };
 
-
-  componentDidMount() {
-    this.listadoClientes();
-  }
+  listadoVentas = () => {
+    fetch(`http://localhost:8282/ventas`)
+      .then((res) => res.json())
+      .then(
+        (vtas) => this.setState({ ventas: vtas, venta: {} }),
+        console.log("Enviado ventas", this.state.ventas)
+      );
+  };
 
   listadoClientes = () => {
     fetch(`http://localhost:8282/clientes`)
       .then((res) => res.json())
       .then(
-        (cltes) => this.setState({ clientes: cltes, cliente: {} }),
+        (cltes) => this.setState({ clientes: cltes, cliente: {}, cuit: "" }),
         console.log("ClientaEnviado", this.state.clientes)
       );
   };
@@ -123,7 +152,7 @@ class VentasAUnCliente extends React.Component {
     if (busqueda != null) {
       fetch(`http://localhost:8282/clientes` + busqueda)
         .then((res) => res.json())
-        .then((clts) => this.setState({ clientes: clts }))
+        .then((clts) => this.setState({ clientes: clts }));
     }
   };
 
@@ -131,22 +160,60 @@ class VentasAUnCliente extends React.Component {
     fetch("http://localhost:8282/clientes/busqueda/:" + cuit)
       .then((res) => res.json())
       .then((unCliente) => this.setState({ cliente: unCliente, cuit: cuit }))
-      .then(console.log("cuit", cuit))
+      .then(console.log("cuit", cuit));
   };
+
+  agregarVentaACliente() {
+    fetch(`http://localhost:8282/clientes/` + this.state.cliente.cuit, {
+      method: "PUT",
+      body: JSON.stringify(this.state.venta),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then(this.listadoClientes())
+      .then(this.estadoInicial());
+
+    this.estadoInicialCliente();
+    this.estadoInicialTransaccion();
+  }
+
+  handleChange(event) {
+    var nuevaVenta = Object.assign({}, this.state.venta);
+    nuevaVenta[event.target.name] = event.target.value;
+    this.setState({ venta: nuevaVenta });
+  }
+
+  handleSubmit(event) {
+    if (this.state.cliente.cuit === undefined) {
+      this.estadoInicial();
+    } else {
+      this.agregarVentaACliente();
+    }
+    event.preventDefault(event);
+  }
 
   limpiarTabla = () => {
     document.getElementById("cuit").value = "";
-    // this.listadoClientes();
+    this.handleRemoveRow();
+    this.estadoInicial();
+    this.setState({ limpiartabla: true });
   };
 
-  handleSubmit=(event)=>(cuitCliente)=>{
-      var busqueda;
-      if(this.state != ""){
-        busqueda = '?busqueda=cuit=="' +cuitCliente + '"';
-        this.encontrarCliente(busqueda);
-      }
-      event.preventDefault(event);
-  }
+  handleSubmitCliente = (event) => (cuitCliente) => {
+    var busqueda;
+    if (this.state != "") {
+      busqueda = '?busqueda=cuit=="' + cuitCliente + '"';
+      this.encontrarCliente(busqueda);
+      this.verDetallesCliente(busqueda);
+    }
+    if (this.state === "") {
+      this.estadoInicial();
+      this.limpiarTabla();
+    }
+    event.preventDefault(event);
+  };
 
   seleccionar = (unCliente) => {
     this.setState({ cliente: unCliente, cuit: unCliente.cuit });
@@ -161,37 +228,70 @@ class VentasAUnCliente extends React.Component {
   };
   clienteSeleccionado = (unCliente) => {};
 
+  agregarVenta = () => {
+    this.clienteSeleccionado(this.props.cliente);
+  };
 
+  handleAddRow = () => {
+    this.setState((prevState, props) => {
+      const row = { content: "esto es un nuevo row!" };
+      return { clientes: [...prevState.clientes, row] };
+    });
+  };
+
+  handleRemoveRow = () => {
+    this.setState((prevState, props) => {
+      return { clientes: prevState.clientes.slice(1) };
+    });
+  };
+
+  handleChangePagos = (event) => {
+    var nuevosPagos = Object.assign({}, this.state.pagosDeCliente);
+    nuevosPagos[event.target.name] = event.target.value;
+    console.log("pagosDeCliente", nuevosPagos);
+    this.setState({ pagosDeCliente: nuevosPagos });
+  };
+
+  deudaTotal() {
+    var total = 0;
+    var saldoCobrado = 0;
+    this.state.ventasACliente.forEach((ventas) => {
+      total += parseFloat(ventas.importeTotal);
+      saldoCobrado += parseFloat(ventas.saldoCobrado);
+    });
+
+    return (total - saldoCobrado).toFixed(2);
+  }
+
+  pagoDelCliente = () => {
+    var total = 0;
+    this.state.pagosDeCliente.forEach((pago) => {
+      total += parseFloat(pago.importePago);
+      console.log("pagos total", total);
+    });
+
+    return total.toFixed(2);
+  };
+
+  calcularDeudaTotal = () => {
+    var total = this.deudaTotal() - this.pagoDelCliente();
+    return total.toFixed(2);
+  };
 
   render(props) {
-    var listaCuitCliente = this.state.clientes.map((cliente) => {
+    var listaCuitCliente = this.state.clientes.map((cliente, index) => {
       return (
-        <div>
-          <option value={cliente.cuit} cuitElegido={cliente.cuit} />
-          </div>
-          
-        );
+        <div key={index}>
+          <option value={cliente.cuit} cuitelegido={cliente.cuit} />
+        </div>
+      );
     });
-    var cuitCliente=this.state.cuit
+    var cuitCliente = this.state.cuit;
     return (
       <div className="container">
         <div></div>
         <Row>&nbsp;</Row>
-        <Container fluid>
-          <Button color="success" onClick={this.toggle}>
-            Nuevo cliente
-          </Button>
-          <Modal
-            isOpen={this.state.modal}
-            toggle={this.toggle}
-            className={this.props.className}
-          >
-            <ModalHeader editable={false} toggle={this.toggle}>
-              <strong>Nuevo</strong>Cliente
-            </ModalHeader>
-          </Modal>
-          <Row>&nbsp;</Row>
-        </Container>
+       
         <div className="animated fadeIn">
           <Row>
             <Col xs="12" lg="12">
@@ -200,7 +300,10 @@ class VentasAUnCliente extends React.Component {
                   <i className="fa fa-align-justify"></i>Iniciar venta
                 </CardHeader>
                 <CardHeader>
-                  <Form onSubmit={this.handleSubmit(this.state.cuitElegido)} id="formulario">
+                  <Form
+                    onSubmit={this.handleSubmitCliente(this.state.cuitelegido)}
+                    id="formulario"
+                  >
                     <FormGroup row>
                       <Col xs="12" md="9">
                         <Input
@@ -210,9 +313,10 @@ class VentasAUnCliente extends React.Component {
                           placeholder="Elegir cuit"
                           onChange={this.handleChangeCliente}
                           list="cliente"
+                          limpiartabla={true}
                         />
                       </Col>
-                      <datalist id="cliente">{listaCuitCliente}</datalist>
+                      <datalist id="cliente">{listaCuitCliente} </datalist>
                     </FormGroup>
                     <div className="row">
                       <div className="input-field col s12 m12">
@@ -221,15 +325,17 @@ class VentasAUnCliente extends React.Component {
                           style={{ margin: "2px" }}
                           color="info"
                           outline
-                          onChange={()=>this.handleChange}
+                          onChange={() => this.handleChange}
                           onClick={() =>
-                            this.verDetallesCliente(this.state.cuitElegido)
+                            this.verDetallesCliente(this.state.cuitelegido)
                           }
+                          limpiartabla={false}
                         >
                           <i className="fa fa-dot-circle-o"></i>Ver detalles de
                           cliente
                         </Button>
                         <Button
+                          limpiarTabla={true}
                           type="button"
                           style={{ margin: "2px" }}
                           color="success"
@@ -242,24 +348,55 @@ class VentasAUnCliente extends React.Component {
                     </div>
                   </Form>
                 </CardHeader>
-                
-      
-                <CardBody>
-                  <Table responsive bordered size="sm">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>cuit</th>
-                        <th>nombre</th>
-                        <th>apellido</th>
-                        <th>razonSocial</th>
-                        <th>telefono</th>
-                        <th>email</th>
-                      </tr>
-                    </thead>
-                    <tbody>{this.unCliente()}</tbody>
-                  </Table>
-                </CardBody>
+                <div>
+                  {/* {Boolean(this.state.cuitelegido>=1) && */}
+                  <this.unaTabla />
+
+                  {/* } */}
+                </div>
+                <CargarVenta
+                  cuit={cuitCliente}
+                  handleChangeCliente={this.handleChangeCliente}
+                  listadoClientes={this.listadoClientes}
+                  listadoVentas={this.listadoVentas}
+                  venta={this.state.venta}
+                  ventas={this.state.ventas}
+                  cliente={this.state.cliente}
+                  clientes={this.state.clientes}
+                  estadoInicial={this.estadoInicial}
+                  pagosDelCliente={this.state.pagoDelCliente}
+                  ventasACliente={this.state.VentasACliente}
+                ></CargarVenta>
+                {/* <this.ventasRows></this.ventasRows> */}
+                <tbody>
+
+                  {/* {this.pagosRows()} */}
+                  {/* 
+                  <tr className="#1b5e20 green darken-4">
+                  <th>Total</th>
+                  <th></th>
+                  <th></th>
+                  <th>{this.calcularDeudaTotal()}</th>
+
+                  {this.calcularDeudaTotal() != 0 ? (
+                    <th>                        
+                    <Button
+                          type="button"
+                          style={{ margin: "2px" }}
+                          color="success"
+                          outline
+                          onClick={this.calcularDeudaTotal}
+                        >
+                          <i className="fa fa-dot-circle-o"></i>Pagar
+                    </Button></th>
+                  ) : (
+                    <th>
+                      <span>Sin Deuda</span>
+                    </th>
+                  )}
+                  <th> </th>
+                </tr>  */}
+                </tbody>
               </Card>
             </Col>
           </Row>
@@ -268,50 +405,117 @@ class VentasAUnCliente extends React.Component {
     );
   }
 
+  unaTabla = () => {
+    return (
+      <CardBody>
+        <Table responsive bordered size="sm">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>cuit</th>
+              <th>nombre</th>
+              <th>apellido</th>
+              <th>razonSocial</th>
+              <th>telefono</th>
+              <th>email</th>
+            </tr>
+          </thead>
+          <tbody>{this.unCliente()}</tbody>
+        </Table>
+      </CardBody>
+    );
+  };
+
+  VentaCollapse = () => {
+    var cuit = this.state.cuitelegido;
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleCollapse = () => setIsOpen(!isOpen);
+    return (
+      <div className="container">
+        <Button
+          onClick={toggleCollapse}
+          type="button"
+          style={{ margin: "2px" }}
+          color="success"
+          outline
+        >
+          <i className="fa fa-dot-circle-o"></i>Iniciar venta
+        </Button>
+        <Collapse isOpen={isOpen}>
+          <div>
+            <CargarVenta
+              cuit={cuit}
+              handleChangeCliente={this.handleChangeCliente}
+              listadoClientes={this.listadoClientes}
+              listadoVentas={this.listadoVentas}
+              venta={this.state.venta}
+              ventas={this.state.ventas}
+              cliente={this.state.cliente}
+              clientes={this.state.clientes}
+              estadoInicial={this.estadoInicial}
+            ></CargarVenta>
+          </div>
+        </Collapse>
+      </div>
+    );
+  };
+
+  // ventasRows = () => {
+  //   return this.state.ventasACliente.map((unaVenta) => {
+  //     return <Venta venta={unaVenta} />;
+  //   });
+  // };
+  // pagosRows = () => {
+  //   return this.state.pagosDelCliente.map((unPago) => {
+  //     return <Pago pago={unPago} />;
+  //   });
+  // };
+
   clienteSeleccionado = (unCliente) => {};
 
   unCliente = () => {
-    var cuit = this.state.cuitElegido;
-    var unCliente=this.state.cliente
-      if(unCliente){
+    var cuit = this.state.cuitelegido;
+    var unCliente = this.state.cliente;
+    if (unCliente) {
+      return (
+        <VentasAUnClienteRows
+          cuit={cuit}
+          cliente={unCliente}
+          clienteSeleccionado={this.clienteSeleccionado(unCliente)}
+          seleccionado={this.state.seleccionado}
+          clientes={this.state.clientes}
+          idCliente={(unCliente) => unCliente.id}
+        />
+      );
+    }
+    if (!unCliente) {
+      return console.log("NULL", null, unCliente);
+    }
+  };
+  renderRows() {
+    let clientes = this.state.clientes;
+    return !clientes
+      ? console.log("NULL", null)
+      : clientes.map((unCliente, index) => {
           return (
-            <VentasAUnClienteRows
-              cuit={cuit}
+            <Cliente
+              key={index}
+              index={index}
               cliente={unCliente}
-              clienteSeleccionado={this.clienteSeleccionado(unCliente)}
-              seleccionado={this.state.seleccionado}
               clientes={this.state.clientes}
-              idCliente={(unCliente) => unCliente.id}
-              />
-            );
-      }if(!unCliente){
-       return console.log("NULL", null,unCliente)
-      }
-    }
-    renderRows() {
-      let clientes = this.state.clientes;
-      return !clientes
-        ? console.log("NULL", null)
-        : clientes.map((unCliente, index) => {
-            return (
-              <Cliente
-                key={index}
-                index={index}
-                cliente={unCliente}
-                clientes={this.state.clientes}
-                selector={this.seleccionar}
-                clienteSeleccionado={this.clienteSeleccionado}
-                actualizarAlEliminar={this.actualizarAlEliminar}
-                eliminarCliente={this.eliminarCliente.bind(this)}
-                editarCliente={this.editarCliente}
-                activarEditar={true}
-                toggle={this.toggle}
-                isMutableItem={(unCliente) => unCliente.id}
-                editarClienteFetch={this.editarClienteFetch.bind(this)}
-              />
-            );
-          });
-    }
+              selector={this.seleccionar}
+              clienteSeleccionado={this.clienteSeleccionado}
+              actualizarAlEliminar={this.actualizarAlEliminar}
+              eliminarCliente={this.eliminarCliente.bind(this)}
+              editarCliente={this.editarCliente}
+              activarEditar={true}
+              toggle={this.toggle}
+              isMutableItem={(unCliente) => unCliente.id}
+              editarClienteFetch={this.editarClienteFetch.bind(this)}
+            />
+          );
+        });
+  }
 }
 
 export default VentasAUnCliente;

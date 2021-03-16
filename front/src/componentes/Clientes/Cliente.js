@@ -10,7 +10,6 @@ class Cliente extends React.Component {
       isMutableItem: props.isMutableItem,
     };
     this.eliminarCliente = this.eliminarCliente.bind(this);
-    this.abrirEditor = this.abrirEditor.bind(this);
     this.seleccionarCliente = this.seleccionarCliente.bind(this);
   }
 
@@ -43,12 +42,6 @@ class Cliente extends React.Component {
 
   agregarVenta = () => {
     this.props.clienteSeleccionado(this.props.cliente);
-  };
-
-  abrirEditor = (index) => (clientes) => {
-    const clientesLista = this.state.clientes[index];
-    console.log("abrirEditor", clientesLista);
-    // if (clientes.length >0) this.props.editarClienteFetch([cliente.id]);
   };
 
  
@@ -96,18 +89,7 @@ class Cliente extends React.Component {
           >
             <i className="fa fa-dot-circle-o">{""} Editar</i>
           </Button>
-          {/* <Button
-          className="btn sm #ff9800 orange btn"
-          onClick={this.agregarVenta}
-        >
-           agregar venta
-        </Button>
-        <Button  onClick={() => this.abrirEditor(index)}>
-          <i
-            className="btn #e65100 orange darken-4"
-          ></i>abrirEditor
-        </Button> */}
-      
+         
         </td>
       </tr>
     );

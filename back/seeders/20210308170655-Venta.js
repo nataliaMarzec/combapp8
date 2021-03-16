@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.bulkInsert(
       "Ventas",
       [
-        {
+        { 
           nroVenta: 101,
           fecha: new Date("<2020-09-4>"),
           tipoDePago: "efectivo",
