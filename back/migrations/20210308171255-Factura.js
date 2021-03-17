@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       clienteId_factura: {
+        foreingkey: true,
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
         references: {

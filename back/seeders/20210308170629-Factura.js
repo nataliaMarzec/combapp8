@@ -58,7 +58,6 @@ module.exports = {
         codigo: 124,
         descripcion: "negro",
         precio: 220,
-        facturaId_articulo: "facturaId_articulo",
         createdAt: new Date(),
         updatedAt: new Date(),
       });

@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "TTIP Combapp8",
   "main": "server.js",
+  "jest": {
+    "verbose": true
+  },
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles && jest.config.js",
     "local:migrate": "node_modules/.bin/sequelize db:migrate",
     "local:migrate:undo": "node_modules/sequelize-cli/lib/sequelize db:migrate:undo",
     "local:seeds": "node_modules/.bin/sequelize db:seed:all"
@@ -20,9 +23,11 @@
     "-": "0.0.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "g": "^2.0.1",
+    "mocha": "^8.3.2",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
@@ -31,6 +36,7 @@
     "sequelize": "^6.3.4"
   },
   "devDependencies": {
+    "jest": "^26.6.3",
     "sequelize-cli": "^6.2.0"
   },
   "standard": {

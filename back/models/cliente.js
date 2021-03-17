@@ -55,12 +55,11 @@ module.exports = function (sequelize, DataTypes) {
         foreignKey: "clienteId_pago",
         as: "Clientes",
       });
-    Cliente.belongsToMany(models.Venta, {
-      through:"RegistroVentas",
-      as: "Venta",
-      foreignKey: "ventaId_cliente", 
+      Cliente.hasMany(models.Venta, {
+        foreignKey: "clienteId_venta",
+        as: "Clientes",
+      }); 
      
-    });
   };
 
   return Cliente;
