@@ -7,7 +7,6 @@ const FacturaModel = require('./factura');
 const ArticuloModel=require('./articulo');
 const UsuarioModel=require('./usuario');
 const PagoModel=require('./pago');
-const RegistroVentasModel=require('./registroVentas')
 
 
 const DBURL='mysql://nat8:Combapp8_20@localhost:3306/combapp8'
@@ -31,7 +30,6 @@ const Factura= FacturaModel(sequelize,Sequelize)
 const Articulo= ArticuloModel(sequelize,Sequelize)
 const Usuario=UsuarioModel(sequelize,Sequelize)
 const Pago=PagoModel(sequelize,Sequelize)
-const RegistroVentas=RegistroVentasModel(sequelize,Sequelize)
 
 
 
@@ -58,7 +56,6 @@ module.exports = {
   Articulo,
   Usuario,
   Pago,
-  RegistroVentas
   
 };
 
