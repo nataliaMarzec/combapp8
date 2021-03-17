@@ -12,7 +12,10 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      clienteId_factura: DataTypes.INTEGER,
+      clienteId_factura:{
+        foreignKey:true,
+        type:DataTypes.INTEGER,
+      },
       fechaEmision: DataTypes.DATE,
       tipoComprobante: DataTypes.STRING,
       nroComprobante: DataTypes.STRING,
