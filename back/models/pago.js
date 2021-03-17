@@ -11,7 +11,10 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      clienteId_pago:DataTypes.INTEGER,
+      clienteId_pago:{
+        foreignKey:true,
+        type:DataTypes.INTEGER,
+      },
       fechaPago: DataTypes.DATE,
       importePago: DataTypes.BIGINT.UNSIGNED,
     },
