@@ -109,6 +109,7 @@ class VentasAUnCliente extends React.Component {
     return listaActualizada;
   }
 
+
   handleChangeCliente = (e) => {
     const target = e.target;
     const value = target.value;
@@ -159,7 +160,7 @@ class VentasAUnCliente extends React.Component {
   };
 
   agregarVentaACliente() {
-    fetch(`http://localhost:8282/clientes/` + this.state.cliente.cuit, {
+    fetch(`http://localhost:8282/ventas/` + this.state.venta.clienteId_venta, {
       method: "PUT",
       body: JSON.stringify(this.state.venta),
       headers: {
@@ -167,11 +168,10 @@ class VentasAUnCliente extends React.Component {
         "Content-Type": "application/json",
       },
     })
-      .then(this.listadoClientes())
+      .then(this.listadoVentas())
       .then(this.estadoInicial());
 
-    this.estadoInicialCliente();
-    this.estadoInicialTransaccion();
+    this.estadoInicial();
   }
 
   handleChange(event) {

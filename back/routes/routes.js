@@ -23,7 +23,7 @@ router.get("/ventas", controllerVenta.getVentas);
 router.delete("/ventas/:id", controllerVenta.deleteVentaById);
 router.put("/ventas/:id", controllerVenta.update);
 router.get("/ventas/facturadas", controllerVenta.getVentasFacturadas);
-router.get("/ventas/fecha", controllerVenta.getVentasFecha);
+router.get("/ventas/busqueda/:fecha", controllerVenta.getVentasFecha);
 // // router.get('ventas/fechas',controllerVenta.buscarFechas)
 router.get("/ventasFacturadas", controllerVenta.buscarFacturadas);
 router.post("/facturas", controllerFactura.create);

@@ -37,6 +37,7 @@ class VentasLista extends React.Component {
       pagosDeCliente: [],
       clientes:props.clientes,
       cliente:props.cliente,
+      fecha:""
       
      
     };
@@ -102,6 +103,50 @@ class VentasLista extends React.Component {
     });
   };
 
+  listadoVentasPorFecha=(fecha)=>{
+      var listaActualizada = this.state.ventas.filter(
+        (item) => fecha == item.fecha
+      );
+      console.log("listaActualizada", listaActualizada);
+      this.setState({
+        ventas: listaActualizada,
+        fecha: fecha,
+      });
+      return listaActualizada;
+    }
+  
+  encontrarVentasPorFecha = (fecha) => {
+    fetch("http://localhost:8282/busqueda/fecha:" + fecha)
+      .then((res) => res.json())
+      .then((unaVenta) => this.setState({venta: unaVenta, fecha: fecha }))
+      .then(console.log("fecha", fecha));
+  };
+
+  listadoBusqueda = (fecha) => {
+    if (fecha != null) {
+      fetch(`http://localhost:8282/ventas` + fecha)
+        .then((res) => res.json())
+        .then((clts) => this.setState({ clientes: clts }));
+    }
+  };
+  handleChange = (e) => {
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({ [name]: value });
+  };
+
+  handleSubmitVentasPorFecha = (event) => (fecha) => {
+    var busqueda;
+    if (this.state != "") {
+      busqueda = '?busqueda=fecha=="' + fecha + '"';
+      this.encontrarVentasPorFecha(busqueda)
+    }
+    if (this.state === "") {
+      this.estadoInicial();
+    }
+    event.preventDefault(event);
+  };
  
   actualizarAlEliminar = (unaVenta) => {
     var listaActualizada = this.state.ventas.filter(
@@ -130,11 +175,72 @@ class VentasLista extends React.Component {
   
 
   render(props) {
- 
+    var listaVentasFecha = this.state.ventas.map((venta, index) => {
+      return (
+        <div key={index}>
+          <option value={venta.fecha} cuitelegido={venta.fecha} />
+        </div>
+      );
+    });
+    var fechaVenta = this.state.fecha;
     return (
       <div className="container">
         <div></div>
         <Row>&nbsp;</Row>
+        <div>
+
+        <CardHeader>
+                  <i className="fa fa-align-justify"></i>Ver ventas por fecha
+                </CardHeader>
+                <CardHeader>
+                  <Form
+                    onSubmit={this.handleSubmitVentasPorFecha(this.state.fechaelegida)}
+                    id="formulario"
+                  >
+                    <FormGroup row>
+                      <Col xs="12" md="9">
+                        <Input
+                          type="date"
+                          id="fecha"
+                          name="fecha"
+                          placeholder="Elegir fecha"
+                          onChange={this.handleChange}
+                          list="cliente"
+                        />
+                      </Col>
+                      <datalist id="cliente">{listaVentasFecha} </datalist>
+                    </FormGroup>
+                    <div className="row">
+                      <div className="input-field col s12 m12">
+                        <Button
+                          type="button"
+                          style={{ margin: "2px" }}
+                          color="info"
+                          outline
+                          onChange={() => this.handleChange}
+                          onClick={() =>
+                            this.listadoVentasPorFecha(this.state.fechaelegida)
+                          }
+                          limpiartabla={false}
+                        >
+                          <i className="fa fa-dot-circle-o"></i>Ver detalles de
+                          cliente
+                        </Button>
+                        {/* <Button
+                          limpiarTabla={true}
+                          type="button"
+                          style={{ margin: "2px" }}
+                          color="success"
+                          outline
+                          onClick={this.limpiarTabla}
+                        >
+                          <i className="fa fa-dot-circle-o"></i>Limpiar
+                        </Button> */}
+                      </div>
+                    </div>
+                  </Form>
+                </CardHeader>
+        </div>
 
         <div className="animated fadeIn">
           <Row>
