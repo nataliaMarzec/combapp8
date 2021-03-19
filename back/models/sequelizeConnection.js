@@ -1,5 +1,8 @@
 'use strict'
-// const {DBURL} = require('../env/config');
+
+require('dotenv').config();
+
+
 const Sequelize = require('sequelize');
 const ClienteModel=require('./cliente');
 const VentaModel=require('./venta');
@@ -8,17 +11,30 @@ const ArticuloModel=require('./articulo');
 const UsuarioModel=require('./usuario');
 const PagoModel=require('./pago');
 
-
-const DBURL='mysql://nat8:Combapp8_20@localhost:3306/combapp8'
-let sequelize=new Sequelize(DBURL,{
-   operatorsAliases:'false',
-    pool: {
-    max: 10,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
+const sequelize = process.env.DB_URL
+    ? 
+      new Sequelize(process.env.DB_URL)
+    : 
+      new Sequelize(
+          process.env.DB,
+          process.env.DB_USER,
+          process.env.DB_PASS,
+          {
+              host: process.env.DB_HOST,
+              dialect: "mysql",
+              // dialectOptions: {
+              //     decimalNumbers: true,
+              // },
+              // timezone: '+06:00',
+              operatorsAliases:'false',
+                  pool: {
+                  max: 10,
+                  min: 0,
+                  acquire: 30000,
+                  idle: 10000
+                }
+          }
+      );
 
 var models={}
 models=sequelize
@@ -41,11 +57,13 @@ sequelize.authenticate()
    console.error('ERROR,_BD_NO_CONECTADA:', err);
  });
 
+sequelize.sync({force:false})
 // sequelize.sync({force:true})
-sequelize.sync()
   .then(() => {
     console.log(`Base de datos y tablas creadas, modelos sincronizados!`)
   })
+
+
 
 
 module.exports = {

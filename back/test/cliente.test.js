@@ -1,21 +1,29 @@
 
-
+require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 // const setup = require("./setup");
 const server = require("../server");
-const { Sequelize, Op, Model } = require("sequelize");
-const { Cliente, Factura } = require("../models/sequelizeConnection");
+// const { Sequelize, Op, Model } = require("sequelize");
+// const { Cliente, Factura } = require("../models/sequelizeConnection");
 const clienteController = require("../controllers/ClienteController");
 var clienteDos;
 
-// describe("/clientes/", () => {
-//   beforeAll(setup);
-//   afterAll(server.destroy);
+// beforeAll(done => {
+//   done()
+// })
+
 
   describe("initial", () => {
     test("first tests", () => {
       expect(true).toBe(true);
     });
   });
+
+
+// afterAll(done => {
+//   // Closing the DB connection allows Jest to exit successfully.
+//   sequelize.close()
+//   done()
+// })
 // });
 
 // function setup() {
